@@ -1,0 +1,10 @@
+{
+
+  "localdb" : "mongodb://localhost/victor",
+  "dbPath": "mongodb://victor:victor@ds157233.mlab.com:57233/victor",
+  "dbPath1": "mongodb//victor:Victor123@ds159963.mlab.com:59963/victor",
+  "port": 59963,
+  "git_url": "https://github.com/victorcitysquare/victorcitysquare.git",
+  "heroku_url": "https://victorcity.herokuapp.com/"
+}
+
