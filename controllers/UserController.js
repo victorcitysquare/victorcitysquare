@@ -151,11 +151,18 @@ function usersController() {
                 }
             }
         }
-        users.findOneAndUpdate(query, userData, {upsert: true}, function (err, data) {
-            if (err)
-                return res.send(generalResponse.sendFailureResponse("Error Occured", 400, error));
-            else {
-                return res.send(generalResponse.sendSuccessResponse("Record Was Updated Successfully", 200, data));
+        console.log("userProfileUpdate,userData",userData);
+        users.findOneAndUpdate(query, userData,{new: true},  function (err, data) {
+            if (err){
+                console.log("userController.updateUserProfile :",err);
+                return res.send(generalResponse.sendFailureResponse("Update UserProfile ,error Occured", 400, error));
+        }
+            else if(data){
+                return res.send(generalResponse.sendSuccessResponse("User Was Updated Successfully", 200, data));
+            }
+            else{
+                console.log("userController.updateUserProfile,data= :",data);
+                    return res.send(generalResponse.sendFailureResponse("Sorry,User could not be updated,please check form data", 404, data));
             }
         });
         return next();
@@ -185,7 +192,7 @@ function usersController() {
         var token = that.randomString();
 
         console.log("userController.forgotPassword random 8 bit token="+token);
-        users.findOneAndUpdate({email: req.params.email}, {verificationCode: token}, {upsert: true}, function (err, data) {
+        users.findOneAndUpdate({email: req.params.email}, {verificationCode: token},  function (err, data) {
             if (err)
                 return res.send(generalResponse.sendFailureResponse("Error Occured while saving verication code  in database", 400, error));
             else if (data) {
@@ -235,7 +242,7 @@ function usersController() {
             }
         }
         userData["verificationCode"] = "";
-        users.findOneAndUpdate(query, userData, function (err, data) {
+        users.findOneAndUpdate(query, userData, {new: true},function (err, data) {
             if (err)
                 return res.send(generalResponse.sendFailureResponse("Error Occured while saving new password  in database", 400, error));
             else if (data) {
