@@ -67,6 +67,7 @@ function usersController() {
 
                 }
             });
+            return next();
 
 
         }
@@ -110,6 +111,7 @@ function usersController() {
 
             else   return res.send(generalResponse.sendFailureResponse("Email does not match", 400, null));
         });
+        return next();
     };
 
 
@@ -156,6 +158,7 @@ function usersController() {
                 return res.send(generalResponse.sendSuccessResponse("Record Was Updated Successfully", 200, data));
             }
         });
+        return next();
 
     };
 
@@ -172,6 +175,7 @@ function usersController() {
             else   return res.send(generalResponse.sendFailureResponse("user with email " + req.params.email + " does not exist", 404, err));
 
         });
+        return next();
 
     };
 
@@ -209,6 +213,7 @@ function usersController() {
                 return res.send(generalResponse.sendFailureResponse("Sorry,unable to send verification code", 200, data));
             }
         });
+        return next();
 
     };
 
