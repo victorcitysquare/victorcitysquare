@@ -189,14 +189,14 @@ function usersController() {
                 transporter.sendMail({
                     to: req.params.email,
                     subject: "Forgot Password ",
-                    text: "Don't forgot we all forget passwords!your temporary password is:".concat(token)
+                    text: "Don't worry, we all forget passwords! your temporary password is:  ".concat(token)
                 }, function (error, info) {
                     if (error) {
                         return res.send(generalResponse.sendFailureResponse("Error Occured while sending forgot password email", 400, error));
                         console.log("forgotPassword().sendEmail() Email Send error ", error);
                     } else if (info) {
                         console.log('UtilController that.sendEmail() Email sent: ' + info.response);
-                        return res.send(generalResponse.sendSuccessResponse("Temporary Password sendt successfully at" + req.params.email, 200, data));
+                        return res.send(generalResponse.sendSuccessResponse("Temporary Password sent successfully at " + req.params.email, 200, data));
 
                     }
                 });
@@ -211,10 +211,46 @@ function usersController() {
         });
 
     };
+
+
+// Reset Password
+    that.resetPassword = function (req, res, next) {
+
+
+        var query = {email: req.body.email,verificationCode:req.body.verificationCode};
+        var userData = {}; // updated user
+        for (var n in req.params) {
+            if (req.body[n]) {
+                userData[n] = req.body[n];
+                if (n == "password") {
+                    var salt = bcrypt.genSaltSync(10);
+                    userData[n] = bcrypt.hashSync(req.body.password, salt);
+                    userData["hashKey"] = salt;
+                }
+            }
+        }
+        userData["verificationCode"] = "";
+        users.findOneAndUpdate(query, userData, function (err, data) {
+            if (err)
+                return res.send(generalResponse.sendFailureResponse("Error Occured while saving new password  in database", 400, error));
+            else if (data) {
+                return res.send(generalResponse.sendSuccessResponse("Password was reset successfuly!", 200, data));
+            }
+
+            else {
+
+                console.log("UserController().resetPassword()=>save verficaion code in database failure");
+                return res.send(generalResponse.sendFailureResponse("Sorry,unable to send you verification code at your email address,please make sure you have entered correct code and email ", 200, data));
+            }
+        });
+        return next();
+
+    };
     that.randomString = function () {
-        var length = 8;
+        var length = 4;
         str = '';
-         r = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+       //  r = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        r = '0123456789';
         for (var i = 0; i < length; i++) {
             str += r.charAt(Math.floor(Math.random() * r.length));
         }

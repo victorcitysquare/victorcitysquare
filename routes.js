@@ -10,6 +10,7 @@ module.exports = function (app) {
     app.post('/login', user.login);  // Authenticate User
     app.get('/users/:email', user.getUserByEmail);  // Get User Profile By Id
     app.get('/sendforgotpasswdmail/:email', user.forgotPassword);  // send forgot password email
+    app.post('/resetpassword', user.resetPassword);  // send forgot password email
     //app.get('/users', user.getUserList);  // Get User List
     app.put('/users', user.updateUserProfile);  // Update  User Profile
     app.del('/users/:email', user.deleteUserByEmail);  // Delete  User By Email
