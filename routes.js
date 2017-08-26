@@ -12,7 +12,7 @@ module.exports = function (app) {
     app.get('/forgotpassword/:email', user.forgotPassword);  // send forgot password at user email
     app.post('/resetpassword', user.resetPassword);  // resets password via verification code
     //app.get('/users', user.getUserList);  // Get User List
-    app.put('/users', user.updateUserProfile);  // Update  User Profile
+    app.post('/updateprofile', user.updateUserProfile);  // Update  User Profile
     app.del('/users/:email', user.deleteUserByEmail);  // Delete  User By Email
 
     var location = require('./controllers/LocationController');
