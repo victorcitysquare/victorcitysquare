@@ -9,7 +9,7 @@ module.exports = function (app) {
     app.post('/register', user.register); //Register User
     app.post('/login', user.login);  // Authenticate User
     app.get('/users/:email', user.getUserByEmail);  // Get User Profile By email
-    app.get('/sendforgotpasswdmail/:email', user.forgotPassword);  // send forgot password at user email
+    app.get('/forgotpassword/:email', user.forgotPassword);  // send forgot password at user email
     app.post('/resetpassword', user.resetPassword);  // resets password via verification code
     //app.get('/users', user.getUserList);  // Get User List
     app.put('/users', user.updateUserProfile);  // Update  User Profile
