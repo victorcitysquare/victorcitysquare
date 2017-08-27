@@ -337,18 +337,44 @@ function usersController() {
     };
 
 
+    // that.addFriend = function (req, res, next) {
+    //
+    //     var newId = new mongoose.mongo.ObjectId(req.body.firend);
+    //     var friend={"_id":newId};
+    //
+    //     //   users.update( {email: req.body.email}, { $pullAll: {firends: [newId] } } );
+    //
+    //     users.update({email: req.body.email},
+    //         {
+    //             $push: {
+    //                 friends:friend
+    //             }
+    //         }, function (err, user) {
+    //
+    //
+    //             if (err)
+    //                 return res.send(generalResponse.sendFailureResponse("Error Occured while adding new friend", 400, error));
+    //             else if (user) {
+    //                 console.log("usercontroller().addFriend() =>user", user)
+    //                 return res.send(generalResponse.sendSuccessResponse("Friend was added successfuly!", 200, user));
+    //             }
+    //             else {
+    //                 return res.send(generalResponse.sendFailureResponse("Error Occured :incorrect email", 400, null));
+    //             }
+    //
+    //         });
+    //     return next();
+    //
+    // };
+
+
     that.addFriend = function (req, res, next) {
 
-        var newId = new mongoose.mongo.ObjectId(req.body.firend);
-        //   users.update( {email: req.body.email}, { $pullAll: {firends: [newId] } } );
 
         users.update({email: req.body.email},
             {
                 $push: {
-                    friends: {
-                        "_id": newId
-
-                    }
+                    friends:req.body.friend
                 }
             }, function (err, user) {
 
@@ -367,9 +393,9 @@ function usersController() {
         return next();
 
     };
-
-
     that.getFriendListByEmail = function (req, res, next) {
+
+        console.log("friendlist");
 
         users.findOne({email: req.params.email}, function (err, user) {
             if (err) {
@@ -378,25 +404,34 @@ function usersController() {
             }
             else if (user) {
                 console.log("UserController().getFriendListByEmail() success ",user);
-                return res.send(generalResponse.sendSuccessResponse("Friend List", 200, user));
-                //var friendList = []
+                var friendList = []
 
-               /* var userIds = user.friends
+                var userEmails = user.friends;
 
-                for (var i = 0; i < userIds.length; i++) {*/
+                for (var i = 0; i < userEmails.length; i++) {
 
-                   // users.findOne({"_id": userIds[i]}, function (err, friend) {
-                   //     friendList.push(friend);
-                        //console.log("UserController().getFriendListByEmail() friend ", friend);
-                        //if (userIds.length === friendList.length) {
+                   users.find({email: userEmails[i]}, function (err, friend) {
 
-                        //
-                        // }
-                  /*  });*/
-                    //  return res.send(generalResponse.sendSuccessResponse("Friend List", 200, friendList));
-               /* }*/
+                       if (err) {
 
-                ///
+                           console.log("Error", userEmails[i], friend);
+                       }
+                       else if (friend) {
+                           console.log("friend", userEmails[i], friend);
+                           friendList.push(friend);
+                           console.log("UserController().getFriendListByEmail() friend ", friend);
+                       }
+                       if (userEmails.length === friendList.length) {
+
+                           return res.send(generalResponse.sendSuccessResponse("Friend List", 200, friendList));
+                       }
+
+                   });
+
+                }
+                console.log("friendList",friendList);
+
+
             }
             else  return res.send(generalResponse.sendFailureResponse("incorrect email ", 200, null));
 

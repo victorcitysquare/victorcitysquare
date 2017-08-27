@@ -14,7 +14,8 @@ module.exports = (function usersSchema () {
         city: {type: String,required: true},
         imageURL: {type: String},
         verificationCode: {type: String},
-        friends: [{type:mongoose.Schema.Types.ObjectId, ref: 'users'}]
+        //friends: [{type:mongoose.Schema.Types.ObjectId, ref: 'users'}]
+        friends: [{type:String}]
 	};
 
     var collectionName = 'users';
