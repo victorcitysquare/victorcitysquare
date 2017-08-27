@@ -43,9 +43,9 @@ function usersController() {
                         imageURL: parameters.imageURL,
                         verificationCode: '',
                         friends: [],
-                        comments:[],
-                        checkIns:[],
-                        images:[]
+                        comments: [],
+                        checkIns: [],
+                        images: []
                     };
 
                     users.create(
@@ -134,18 +134,7 @@ function usersController() {
         return next();
     };
 
-    /*that.getUserByEmail = function (req, res, next) {
-        users.findOne({
-            email: req.params.email
-        }, function (err, data) {
-            if (err)
-                return res.send(generalResponse.sendFailureResponse("getUserByEmail: Error Occured", 400, error));
-            else {
-                return res.send(generalResponse.sendSuccessResponse("getUserByEmail: Successful", 200, data));
-            }
-        });
-        return next();
-    };*/
+
 
     that.getUserByEmail = function (req, res, next) {
         users.find({
@@ -382,7 +371,7 @@ function usersController() {
         users.update({email: req.body.email},
             {
                 $push: {
-                    friends:req.body.friend
+                    friends: req.body.friend
                 }
             }, function (err, user) {
 
@@ -401,6 +390,21 @@ function usersController() {
         return next();
 
     };
+
+    that.searchFriend = function (req, res, next) {
+        users.find({
+            email: req.params.email
+        }, function (err, data) {
+            if (err)
+                return res.send(generalResponse.sendFailureResponse("searchFriend: Error Occured", 400, error));
+            else {
+                return res.send(generalResponse.sendSuccessResponse("searchFriend: Successful", 200, data));
+            }
+        });
+        return next();
+    };
+
+
     that.getFriendListByEmail = function (req, res, next) {
 
         console.log("friendlist");
@@ -411,33 +415,33 @@ function usersController() {
                 return next(err);
             }
             else if (user) {
-                console.log("UserController().getFriendListByEmail() success ",user);
+                console.log("UserController().getFriendListByEmail() success ", user);
                 var friendList = []
 
                 var userEmails = user.friends;
 
                 for (var i = 0; i < userEmails.length; i++) {
 
-                   users.find({email: userEmails[i]}, function (err, friend) {
+                    users.find({email: userEmails[i]}, function (err, friend) {
 
-                       if (err) {
+                        if (err) {
 
-                           console.log("Error", userEmails[i], friend);
-                       }
-                       else if (friend) {
-                           console.log("friend", userEmails[i], friend);
-                           friendList.push(friend);
-                           console.log("UserController().getFriendListByEmail() friend ", friend);
-                       }
-                       if (userEmails.length === friendList.length) {
+                            console.log("Error", userEmails[i], friend);
+                        }
+                        else if (friend) {
+                            console.log("friend", userEmails[i], friend);
+                            friendList.push(friend);
+                            console.log("UserController().getFriendListByEmail() friend ", friend);
+                        }
+                        if (userEmails.length === friendList.length) {
 
-                           return res.send(generalResponse.sendSuccessResponse("Friend List", 200, friendList));
-                       }
+                            return res.send(generalResponse.sendSuccessResponse("Friend List", 200, friendList));
+                        }
 
-                   });
+                    });
 
                 }
-                console.log("friendList",friendList);
+                console.log("friendList", friendList);
 
 
             }
