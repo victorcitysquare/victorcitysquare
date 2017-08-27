@@ -1,5 +1,7 @@
 module.exports = function (app) {
     var user = require('./controllers/UserController');
+    var location = require('./controllers/LocationController');
+    var fileController = require('./controllers/FileController');
 
 
     app.get('/', function (req, res, next) {
@@ -16,12 +18,12 @@ module.exports = function (app) {
     app.post('/updateprofile', user.updateUserProfile);  // Update  User Profile
     app.del('/users/:email', user.deleteUserByEmail);  // Delete  User By Email
 
-    var location = require('./controllers/LocationController');
+
     app.get('/location', location.getLocation);  // Get Location
 
-    var fileController = require('./controllers/FileController');
-    app.get('/download', fileController.download);
+
     app.post('/uploadImage', fileController.uploadImage);
+    app.get('/download', fileController.download);
 
     app.post('/addfriend', user.addFriend);
     app.get('/friendlist/:email', user.getUserByEmail);
