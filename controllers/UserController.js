@@ -367,18 +367,18 @@ function usersController() {
 
                 var userIds = user.friends
 
-                // for (var i = 0; i < userIds.length; i++) {
+                for (var i = 0; i < userIds.length; i++) {
 
-                users.findOne({"_id": userIds[i]}, function (err, friend) {
-                    friendList.push(friend);
-                    console.log("UserController().getFriendListByEmail() friend ", friend);
-                    //if (userIds.length === friendList.length) {
+                    users.findOne({"_id": userIds[i]}, function (err, friend) {
+                        friendList.push(friend);
+                        console.log("UserController().getFriendListByEmail() friend ", friend);
+                        //if (userIds.length === friendList.length) {
                         return res.send(generalResponse.sendSuccessResponse("Friend List", 200, friend));
-                    //
-                    // }
-                });
-              //  return res.send(generalResponse.sendSuccessResponse("Friend List", 200, friendList));
-                // }
+                        //
+                        // }
+                    });
+                    //  return res.send(generalResponse.sendSuccessResponse("Friend List", 200, friendList));
+                }
 
                 ///
             }

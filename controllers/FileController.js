@@ -35,12 +35,12 @@ function FileController() {
 
 
         var email = req.body.email;
-        console.log("FileController.upload() email body ",email);
+
         console.log("FileController.upload() email request ",req.params.email);
 
 
         cloudinary.v2.uploader.upload({
-            imageData:req.body.imageData,
+            imageData:req.params.imageData,
             email : email
         }, {timeout:600000}, function (error, result) {
             if (error) {
