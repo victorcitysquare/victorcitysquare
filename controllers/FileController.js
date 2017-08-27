@@ -51,6 +51,9 @@ function FileController() {
                 if(result != null){
                     if(result.url.length > 1 || result.secure_url.length > 1){
 
+                        console.log("result of upload \n", result.secure_url, "\n insecure url: \n", result.url);
+                        res.send(generalResponse.sendSuccessResponse("true","200",result.url))
+
                         users.findOneAndUpdate({email:req.body.email}, { imageURL:result.url}, function (err, data) {
                             if (err) {
                                 console.log("FileController.upload() Error",err);
@@ -67,8 +70,7 @@ function FileController() {
                                 return res.send(generalResponse.sendFailureResponse(" FileController.upload() something went wrong", 200, null));
                             }
                         });
-                        console.log("result of upload \n", result.secure_url, "\n insecure url: \n", result.url);
-                        res.send(generalResponse.sendSuccessResponse("true","200",result.url))
+
                     }
                 }
             }

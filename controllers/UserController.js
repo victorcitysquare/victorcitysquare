@@ -126,7 +126,7 @@ function usersController() {
         return next();
     };
 
-    that.getUserByEmail = function (req, res, next) {
+    /*that.getUserByEmail = function (req, res, next) {
         users.findOne({
             email: req.params.email
         }, function (err, data) {
@@ -137,7 +137,21 @@ function usersController() {
             }
         });
         return next();
+    };*/
+
+    that.getUserByEmail = function (req, res, next) {
+        users.find({
+            email: req.params.email
+        }, function (err, data) {
+            if (err)
+                return res.send(generalResponse.sendFailureResponse("getUserByEmail: Error Occured", 400, error));
+            else {
+                return res.send(generalResponse.sendSuccessResponse("getUserByEmail: Successful", 200, data));
+            }
+        });
+        return next();
     };
+
     that.updateUserProfile = function (req, res, next) {
 
         var query = {"email": req.body.email};
