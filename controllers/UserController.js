@@ -39,7 +39,7 @@ function usersController() {
                         else
                             user[n] = req.params[n];
                     }
-                    user["friend"]=[];
+                    user["friend"] = [];
                     users.create(
                         user
                         , function (err, result) {
@@ -152,18 +152,18 @@ function usersController() {
                 }
             }
         }
-        console.log("userProfileUpdate,userData",userData);
-        users.findOneAndUpdate(query, userData,{new: true},  function (err, data) {
-            if (err){
-                console.log("userController.updateUserProfile :",err);
+        console.log("userProfileUpdate,userData", userData);
+        users.findOneAndUpdate(query, userData, {new: true}, function (err, data) {
+            if (err) {
+                console.log("userController.updateUserProfile :", err);
                 return res.send(generalResponse.sendFailureResponse("Update UserProfile ,error Occured", 400, error));
-        }
-            else if(data){
+            }
+            else if (data) {
                 return res.send(generalResponse.sendSuccessResponse("User Was Updated Successfully", 200, data));
             }
-            else{
-                console.log("userController.updateUserProfile,data= :",data);
-                    return res.send(generalResponse.sendFailureResponse("Sorry,User could not be updated,please check form data", 404, data));
+            else {
+                console.log("userController.updateUserProfile,data= :", data);
+                return res.send(generalResponse.sendFailureResponse("Sorry,User could not be updated,please check form data", 404, data));
             }
         });
         return next();
@@ -192,8 +192,8 @@ function usersController() {
     that.forgotPassword = function (req, res, next) {
         var token = that.randomString();
 
-        console.log("userController.forgotPassword random 8 bit token="+token);
-        users.findOneAndUpdate({email: req.params.email}, {verificationCode: token},  function (err, data) {
+        console.log("userController.forgotPassword random 8 bit token=" + token);
+        users.findOneAndUpdate({email: req.params.email}, {verificationCode: token}, function (err, data) {
             if (err)
                 return res.send(generalResponse.sendFailureResponse("Error Occured while saving verication code  in database", 400, error));
             else if (data) {
@@ -230,7 +230,7 @@ function usersController() {
     that.resetPassword = function (req, res, next) {
 
 
-        var query = {email: req.body.email,verificationCode:req.body.verificationCode};
+        var query = {email: req.body.email, verificationCode: req.body.verificationCode};
         var userData = {}; // updated user
         for (var n in req.params) {
             if (req.body[n]) {
@@ -243,7 +243,7 @@ function usersController() {
             }
         }
         userData["verificationCode"] = "";
-        users.findOneAndUpdate(query, userData, {new: true},function (err, data) {
+        users.findOneAndUpdate(query, userData, {new: true}, function (err, data) {
             if (err)
                 return res.send(generalResponse.sendFailureResponse("Error Occured while saving new password  in database", 400, error));
             else if (data) {
@@ -261,32 +261,31 @@ function usersController() {
     };
 
 
-
     // Reset Password
     that.changePassword = function (req, res, next) {
 
-        var password=req.body.password;
-        var oldpassword=req.body.oldpassword;
-        var email=req.body.email;
-        var query={email:email};
+        var password = req.body.password;
+        var oldpassword = req.body.oldpassword;
+        var email = req.body.email;
+        var query = {email: email};
         var userData = {};
 
         users.findOne(query, function (err, result) {
-            if (err){
-                console.log("UserController().changePassword()=> find user by email error,",result);
+            if (err) {
+                console.log("UserController().changePassword()=> find user by email error,", result);
                 return res.send(generalResponse.sendFailureResponse("changePassword,find User By Email: Error Occured", 400, error));
-        }
+            }
             else if (result) {
 
                 //comparasison
                 var hash = result.password;
                 if (bcrypt.compareSync(oldpassword, hash)) {
-                    if(password) {
+                    if (password) {
                         var salt = bcrypt.genSaltSync(10);
                         userData["hashKey"] = salt;
                         userData["password"] = bcrypt.hashSync(password, salt);
 
-                        users.findOneAndUpdate(query, userData, {new: true},function (err, data) {
+                        users.findOneAndUpdate(query, userData, {new: true}, function (err, data) {
                             if (err) {
                                 console.log("UserController().changePassword()=>users.findOneAndUpdate error");
                                 return res.send(generalResponse.sendFailureResponse("Error Occured while saving new password  in database", 400, error));
@@ -315,7 +314,7 @@ function usersController() {
     that.randomString = function () {
         var length = 4;
         str = '';
-       //  r = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        //  r = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         r = '0123456789';
         for (var i = 0; i < length; i++) {
             str += r.charAt(Math.floor(Math.random() * r.length));
@@ -324,28 +323,29 @@ function usersController() {
     };
 
 
-    that.addFriend=function (req, res, next) {
+    that.addFriend = function (req, res, next) {
 
         var newId = new mongoose.mongo.ObjectId(req.body.firend);
-     //   users.update( {email: req.body.email}, { $pullAll: {firends: [newId] } } );
+        //   users.update( {email: req.body.email}, { $pullAll: {firends: [newId] } } );
 
         users.update({email: req.body.email},
             {
-                $push : {
-                    friends : {
+                $push: {
+                    friends: {
                         "_id": newId
 
-                    }                }
-            },function (err, user) {
+                    }
+                }
+            }, function (err, user) {
 
 
                 if (err)
                     return res.send(generalResponse.sendFailureResponse("Error Occured while adding new friend", 400, error));
                 else if (user) {
-                    console.log("usercontroller().addFriend() =>user",user)
+                    console.log("usercontroller().addFriend() =>user", user)
                     return res.send(generalResponse.sendSuccessResponse("Friend was added successfuly!", 200, user));
                 }
-                else{
+                else {
                     return res.send(generalResponse.sendFailureResponse("Error Occured :incorrect email", 400, null));
                 }
 
@@ -355,40 +355,38 @@ function usersController() {
     };
 
 
-
-
     that.getFriendListByEmail = function (req, res, next) {
 
-        users.findOne({email:req.params.email}, function (err, user) {
-            if (err){
-                console.log("UserController().getFriendListByEmail() error,",err);
-                return  next(err);
+        users.findOne({email: req.params.email}, function (err, user) {
+            if (err) {
+                console.log("UserController().getFriendListByEmail() error,", err);
+                return next(err);
             }
             else if (user) {
                 var friendList = []
 
                 var userIds = user.friends
 
-                for (var i = 0; i < userIds.length; i++) {
+                // for (var i = 0; i < userIds.length; i++) {
 
-                    users.findOne({"_id":userIds[i]}, function(err, friend) {
-                        friendList.push(friend);
+                users.findOne({"_id": userIds[i]}, function (err, friend) {
+                    friendList.push(friend);
+                    console.log("UserController().getFriendListByEmail() friend ", friend);
+                    //if (userIds.length === friendList.length) {
+                        return res.send(generalResponse.sendSuccessResponse("Friend List", 200, friend));
+                    //
+                    // }
+                });
+              //  return res.send(generalResponse.sendSuccessResponse("Friend List", 200, friendList));
+                // }
 
-                        // if (userIds.length === friendList.length) {
-                        //     return res.send(generalResponse.sendSuccessResponse("Friend List", 200, friendList));
-                        //
-                        // }
-                    });
-                        return res.send(generalResponse.sendSuccessResponse("Friend List", 200, friendList));
-            }
-
-                        ///
+                ///
             }
             else  return res.send(generalResponse.sendFailureResponse("incorrect email ", 200, null));
 
         });
 
- next();
+        next();
     };
 
 
