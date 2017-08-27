@@ -11,6 +11,7 @@ module.exports = function (app) {
     app.get('/users/:email', user.getUserByEmail);  // Get User Profile By email
     app.get('/forgotpassword/:email', user.forgotPassword);  // send forgot password at user email
     app.post('/resetpassword', user.resetPassword);  // resets password via verification code
+    app.post('/updatepassword', user.changePassword);  // change password,provide old password,new password,email
     //app.get('/users', user.getUserList);  // Get User List
     app.post('/updateprofile', user.updateUserProfile);  // Update  User Profile
     app.del('/users/:email', user.deleteUserByEmail);  // Delete  User By Email

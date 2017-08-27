@@ -258,6 +258,59 @@ function usersController() {
         return next();
 
     };
+
+
+
+    // Reset Password
+    that.changePassword = function (req, res, next) {
+
+        var password=req.body.password;
+        var oldpassword=req.body.oldpassword;
+        var email=req.body.email;
+        var query={email:email};
+        var userData = {};
+
+        users.findOne(query, function (err, result) {
+            if (err){
+                console.log("UserController().changePassword()=> find user by email error,",result);
+                return res.send(generalResponse.sendFailureResponse("changePassword,find User By Email: Error Occured", 400, error));
+        }
+            else if (result) {
+
+                //comparasison
+                var hash = result.password;
+                if (bcrypt.compareSync(oldpassword, hash)) {
+                    if(password) {
+                        var salt = bcrypt.genSaltSync(10);
+                        userData["hashKey"] = salt;
+                        userData["password"] = bcrypt.hashSync(password, salt);
+
+                        users.findOneAndUpdate(query, userData, {new: true},function (err, data) {
+                            if (err) {
+                                console.log("UserController().changePassword()=>users.findOneAndUpdate error");
+                                return res.send(generalResponse.sendFailureResponse("Error Occured while saving new password  in database", 400, error));
+                            }
+                            else if (data) {
+                                return res.send(generalResponse.sendSuccessResponse("Password was changed successfuly!", 200, data));
+                            }
+
+                            else {
+
+                                console.log("UserController().changePassword()=>save new password in database failure");
+                                return res.send(generalResponse.sendFailureResponse("Sorry,unable to update new password,something went wrong ", 200, data));
+                            }
+                        });
+                    }
+                    else  return res.send(generalResponse.sendFailureResponse("Please enter new password ", 200, null));
+                }
+                else  return res.send(generalResponse.sendFailureResponse("old password does not matach ", 200, null));
+            }
+            else  return res.send(generalResponse.sendFailureResponse("incorrect email ", 200, null));
+
+        });
+        return next();
+
+    };
     that.randomString = function () {
         var length = 4;
         str = '';
@@ -268,6 +321,8 @@ function usersController() {
         }
         return str;
     };
+
+
 };
 
 
