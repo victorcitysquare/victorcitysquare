@@ -37,11 +37,9 @@ function FileController() {
         var email = req.body.email;
         console.log("FileController.upload() email body ",email);
         console.log("FileController.upload() email request ",req.params.email);
-        console.log("FileController.upload() imageData body "+req.body.imageData);
-        console.log("FileController.upload() imageData request "+req.params.imageData);
 
 
-        cloudinary.v2.uploader.upload(req.body.imageData, {timeout:600000}, function (error, result) {
+        cloudinary.v2.uploader.upload({imageData:req.body.imageData}, {timeout:600000}, function (error, result) {
             if (error) {
                 console.log("FileController.upload() error ocurred", error);
                 res.send(generalResponse.sendFailureResponse(error,error,"Error occured"));
