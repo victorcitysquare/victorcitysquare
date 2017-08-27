@@ -363,22 +363,22 @@ function usersController() {
                 return next(err);
             }
             else if (user) {
-                var friendList = []
+                //var friendList = []
 
-                var userIds = user.friends
+               /* var userIds = user.friends
 
-                for (var i = 0; i < userIds.length; i++) {
+                for (var i = 0; i < userIds.length; i++) {*/
 
-                    users.findOne({"_id": userIds[i]}, function (err, friend) {
-                        friendList.push(friend);
-                        console.log("UserController().getFriendListByEmail() friend ", friend);
+                   // users.findOne({"_id": userIds[i]}, function (err, friend) {
+                   //     friendList.push(friend);
+                        //console.log("UserController().getFriendListByEmail() friend ", friend);
                         //if (userIds.length === friendList.length) {
-                        return res.send(generalResponse.sendSuccessResponse("Friend List", 200, friend));
+                        return res.send(generalResponse.sendSuccessResponse("Friend List", 200, user));
                         //
                         // }
-                    });
+                  /*  });*/
                     //  return res.send(generalResponse.sendSuccessResponse("Friend List", 200, friendList));
-                }
+               /* }*/
 
                 ///
             }
