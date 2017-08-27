@@ -13,7 +13,8 @@ module.exports = (function usersSchema () {
         state: {type: String,required: true},
         city: {type: String,required: true},
         imageURL: {type: String},
-        verificationCode: {type: String}
+        verificationCode: {type: String},
+        friends: [{type:mongoose.Schema.Types.ObjectId, ref: 'users'}]
 	};
 
     var collectionName = 'users';

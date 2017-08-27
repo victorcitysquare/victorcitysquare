@@ -6,7 +6,7 @@ function usersController() {
     var users = require('../models/usersSchema');
     var generalResponse = require('./GeneralResponse');
     var bcrypt = require('bcrypt');
-
+    var mongoose = require('../db').mongoose;
     var nodemailer = require('nodemailer');
     var transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -39,6 +39,7 @@ function usersController() {
                         else
                             user[n] = req.params[n];
                     }
+                    user["friend"]=[];
                     users.create(
                         user
                         , function (err, result) {
@@ -321,6 +322,37 @@ function usersController() {
         }
         return str;
     };
+
+
+    that.addFriend=function (req, res, next) {
+
+        var newId = new mongoose.mongo.ObjectId(req.body.firend);
+     //   users.update( {email: req.body.email}, { $pullAll: {firends: [newId] } } );
+
+        users.update({email: req.body.email},
+            {
+                $push : {
+                    friends : {
+                        "_id": newId
+
+                    }                }
+            },function (err, user) {
+
+
+                if (err)
+                    return res.send(generalResponse.sendFailureResponse("Error Occured while adding new friend", 400, error));
+                else if (user) {
+                    console.log("usercontroller().addFriend() =>user",user)
+                    return res.send(generalResponse.sendSuccessResponse("Friend was added successfuly!", 200, user));
+                }
+                else{
+                    return res.send(generalResponse.sendFailureResponse("Error Occured :incorrect email", 400, null));
+                }
+
+            });
+        return next();
+
+    }
 
 
 };

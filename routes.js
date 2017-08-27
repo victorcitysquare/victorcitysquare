@@ -23,6 +23,8 @@ module.exports = function (app) {
     app.get('/download', fileController.download);
     app.post('/upload', fileController.upload);
 
+    app.post('/addfriend', user.addFriend);
+
 
 
 };
