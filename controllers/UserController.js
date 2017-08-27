@@ -28,7 +28,6 @@ function usersController() {
                 else {
 
                     var salt = bcrypt.genSaltSync(10);
-                    user["hashKey"] = salt;
 
                     var parameters = req.params;
                     var user = {
