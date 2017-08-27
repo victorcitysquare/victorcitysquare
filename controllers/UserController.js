@@ -352,7 +352,44 @@ function usersController() {
             });
         return next();
 
-    }
+    };
+
+
+
+
+    that.getFriendListByEmail = function (req, res, next) {
+
+        users.findOne({email:req.params.email}, function (err, user) {
+            if (err){
+                console.log("UserController().getFriendListByEmail() error,",err);
+                return  next(err);
+            }
+            else if (user) {
+                var friendList = []
+
+                var userIds = user.friends
+
+                for (var i = 0; i < userIds.length; i++) {
+
+                    users.findOne({_id:userIds[i]}, function(err, friend) {
+                        friendList.push(friend);
+
+                        // if (userIds.length === friendList.length) {
+                        //     return res.send(generalResponse.sendSuccessResponse("Friend List", 200, friendList));
+                        //
+                        // }
+                    });
+                        return res.send(generalResponse.sendSuccessResponse("Friend List", 200, friendList));
+            }
+
+                        ///
+            }
+            else  return res.send(generalResponse.sendFailureResponse("incorrect email ", 200, null));
+
+        });
+
+ next();
+    };
 
 
 };
