@@ -41,10 +41,15 @@ function usersController() {
                         city: parameters.city,
                         imageURL: parameters.imageURL,
                         verificationCode: '',
-                        friends: [],
-                        comments: [],
-                        checkIns: [],
-                        images: []
+                        friends: ["mujahid.mms@gmail.com","rafiq@gmail.com","billy@mail.com"],
+                        comments: ["This is test comment","this is test comment 2"],
+                        checkIns: ["Location 1","Location 2"],
+                        images: [
+                            "http://res.cloudinary.com/dsmd1d21f/image/upload/v1503693220/sample.jpg",
+                            "http://res.cloudinary.com/dsmd1d21f/image/upload/v1503792841/profile_ltixdv.png",
+                            "http://res.cloudinary.com/dsmd1d21f/image/upload/v1503871000/ic_comment_leoqbk.png",
+                            "http://res.cloudinary.com/dsmd1d21f/image/upload/v1503871003/ic_share_ct7wmq.png"
+                        ]
                     };
 
                     users.create(
