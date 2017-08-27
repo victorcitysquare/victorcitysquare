@@ -371,7 +371,7 @@ function usersController() {
 
                 for (var i = 0; i < userIds.length; i++) {
 
-                    users.findOne({_id:userIds[i]}, function(err, friend) {
+                    users.findOne({"_id":userIds[i]}, function(err, friend) {
                         friendList.push(friend);
 
                         // if (userIds.length === friendList.length) {
