@@ -27,19 +27,27 @@ function usersController() {
                 }
                 else {
 
-                    var user = {};
-                    // Hash the password with the salt
                     var salt = bcrypt.genSaltSync(10);
                     user["hashKey"] = salt;
 
-                    for (var n in req.params) {
-                        //encrypt pass before inserting into db
-                        if (n == "password")
-                            user[n] = bcrypt.hashSync(req.params.password, salt);
-                        else
-                            user[n] = req.params[n];
-                    }
-                    user["friend"] = [];
+                    var parameters = req.params;
+                    var user = {
+                        username: parameters.username,
+                        email: parameters.email,
+                        password: bcrypt.hashSync(req.params.password, salt),
+                        hashKey: salt,
+                        age: parameters.age,
+                        number: parameters.number,
+                        state: parameters.state,
+                        city: parameters.city,
+                        imageURL: parameters.imageURL,
+                        verificationCode: '',
+                        friends: [],
+                        comments:[],
+                        checkIns:[],
+                        images:[]
+                    };
+
                     users.create(
                         user
                         , function (err, result) {
