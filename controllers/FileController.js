@@ -33,26 +33,31 @@ function FileController() {
 
     that.upload = function (req, res, next) {
 
-        var email = req.body.email
+
+        var email = req.body.email;
+        console.log("FileController.upload() email body ",email);
+        console.log("FileController.upload() email request ",req.params.email);
+        console.log("FileController.upload() imageData body "+req.body.imageData);
+        console.log("FileController.upload() imageData request "+req.params.imageData);
+
 
         cloudinary.v2.uploader.upload(req.body.imageData, {timeout:600000}, function (error, result) {
             if (error) {
-                console.log("error ocurred", error);
+                console.log("FileController.upload() error ocurred", error);
                 res.send(generalResponse.sendFailureResponse(error,error,"Error occured"));
             }
             else {
                 if(result != null){
                     if(result.url.length > 1 || result.secure_url.length > 1){
-                        //TODO save in database.
-
 
                         users.findOneAndUpdate({email:req.body.email}, { imageURL:result.url}, function (err, data) {
                             if (err) {
-                                console.log("FileController.upload()Error",err);
+                                console.log("FileController.upload() Error",err);
                                 return res.send(generalResponse.sendFailureResponse("FileController.upload()Error Occured while saving imageURL  in database", 400, error));
                             }
                             else if (data) {
-                                return res.send(generalResponse.sendSuccessResponse("imageURL saved successfuly in database!", 200, data));
+                                console.log("FileController.upload() success",err);
+                                return res.send(generalResponse.sendSuccessResponse("Image saved successfully in database!", 200, data));
                             }
 
                             else {
