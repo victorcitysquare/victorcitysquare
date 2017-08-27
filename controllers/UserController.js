@@ -363,6 +363,8 @@ function usersController() {
                 return next(err);
             }
             else if (user) {
+                console.log("UserController().getFriendListByEmail() success ",user);
+                return res.send(generalResponse.sendSuccessResponse("Friend List", 200, user));
                 //var friendList = []
 
                /* var userIds = user.friends
@@ -373,7 +375,7 @@ function usersController() {
                    //     friendList.push(friend);
                         //console.log("UserController().getFriendListByEmail() friend ", friend);
                         //if (userIds.length === friendList.length) {
-                        return res.send(generalResponse.sendSuccessResponse("Friend List", 200, user));
+
                         //
                         // }
                   /*  });*/
