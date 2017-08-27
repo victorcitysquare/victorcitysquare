@@ -21,7 +21,7 @@ module.exports = function (app) {
 
     var fileController = require('./controllers/FileController');
     app.get('/download', fileController.download);
-    app.post('/upload', fileController.upload);
+    app.post('/uploadImage', fileController.uploadImage);
 
     app.post('/addfriend', user.addFriend);
     app.get('/friendlist/:email', user.getUserByEmail);
