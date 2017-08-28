@@ -408,54 +408,41 @@ function usersController() {
         return next();
     };
 
-
     that.getFriendListByEmail = function (req, res, next) {
 
-        console.log("friendlist");
-
-        users.findOne({email: req.params.email}, function (err, user) {
+        var friendList = [];
+        var userEmails=[];
+        users.findOne({email: req.params.email}, function (err, data) {
             if (err) {
-                console.log("UserController().getFriendListByEmail() error,", err);
                 return next(err);
             }
-            else if (user) {
-                console.log("UserController().getFriendListByEmail() success ", user);
-                var friendList = []
-
-                var userEmails = user.friends;
-
-                for (var i = 0; i < userEmails.length; i++) {
-
-                    users.find({email: userEmails[i]}, function (err, friend) {
-
-                        if (err) {
-
-                            console.log("Error", userEmails[i], friend);
-                        }
-                        else if (friend) {
-                            console.log("friend", userEmails[i], friend);
-                            friendList.push(friend);
-                            console.log("UserController().getFriendListByEmail() friend ", friend);
-                        }
-                        if (userEmails.length === friendList.length) {
-
-                            return res.send(generalResponse.sendSuccessResponse("Friend List", 200, friendList));
-                        }
-
-                    });
-
-                }
-                console.log("friendList", friendList);
+            else if (data!=null) {
 
 
+              users.find({ "email": { "$in": data.friends }}, function (err, result) {
+
+
+                  if (err)
+                      return res.send(generalResponse.sendFailureResponse("Error Occured while adding new friend", 400, error));
+                  else if (result) {
+                      console.log("usercontroller().addFriend() =>user", result)
+                      return res.send(generalResponse.sendSuccessResponse("Friend was added successfuly!", 200, result));
+                  }
+                  else {
+                      return res.send(generalResponse.sendFailureResponse("Error Occured :incorrect email", 400, null));
+                  }
+
+              });
             }
-            else  return res.send(generalResponse.sendFailureResponse("incorrect email ", 200, null));
+
+            else{
+                return res.send(generalResponse.sendFailureResponse("incorrect email ", 200, null));
+            }
 
         });
 
         next();
     };
-
 
 };
 
