@@ -26,6 +26,7 @@ module.exports = function (app) {
     app.get('/download', fileController.download);
 
     app.post('/addfriend', user.addFriend);
+    app.post('/unfriend', user.unFriend);
     app.get('/friends/:email', user.getFriendListByEmail);
     app.get('/friendlist/:email', user.searchFriend);
 

@@ -395,6 +395,22 @@ function usersController() {
 
     };
 
+    that.unFriend= function (req, res, next) {
+
+        var query={email:req.body.email};
+
+        users.findOneAndUpdate(query, {$pull: {friends:req.body.friend}}, function(err, data){
+                if (err)
+                    return res.send(generalResponse.sendFailureResponse("UnFriend: Error Occured", 400, error));
+                else {
+                    return res.send(generalResponse.sendSuccessResponse(req.body.friend+" was unfriended successfuly", 200, data));
+                }
+
+        });
+
+        next();
+    }
+
     that.searchFriend = function (req, res, next) {
         users.find({
             email: req.params.email
