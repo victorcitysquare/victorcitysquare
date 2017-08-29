@@ -206,11 +206,11 @@ function usersController() {
 // Forgot Password
     that.forgotPassword = function (req, res, next) {
 
-        console.log("email body "+req.params.email)
+        console.log("email "+req.params.email)
         var token = that.randomString();
 
         console.log("userController.forgotPassword random 8 bit token=" + token);
-        users.findOneAndUpdate({email: req.body.email}, {verificationCode: token}, function (err, data) {
+        users.findOneAndUpdate({email: req.params.email}, {verificationCode: token}, function (err, data) {
             if (err)
                 return res.send(generalResponse.sendFailureResponse("Error Occured while saving verication code  in database", 400, error));
             else if (data) {
