@@ -8,12 +8,6 @@ var socketio= require("socket.io");
 
     var numUsers = 0;
 
-    io.sockets.on('connection', function (socket) {
-        socket.emit('news', { hello: 'world' });
-        socket.on('my other event', function (data) {
-            console.log(data);
-        });
-    });
   //  io.on('connection', function (socket) {
     io.sockets.on('connection', function (socket) {
         var addedUser = false;
