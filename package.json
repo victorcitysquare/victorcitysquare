@@ -24,10 +24,11 @@
     "inspect": "^0.0.2",
     "mongoose": "^4.11.8",
     "node-pre-gyp": "*",
-    "nodemailer": "^4.0.1",
+    "nodemailer": "^4.1.0",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
     "request": "^2.81.0",
-    "restify": "^4.3.0"
+    "restify": "^4.3.0",
+    "socket.io": "^2.0.3"
   }
 }
