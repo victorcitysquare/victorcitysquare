@@ -11,7 +11,7 @@ module.exports = function (app) {
     app.post('/register', user.register); //Register User
     app.post('/login', user.login);  // Authenticate User
     app.get('/users/:email', user.getUserByEmail);  // Get User Profile By email
-    app.get('/forgotpassword/:email', user.forgotPassword);  // send forgot password at user email
+    app.get('/forgotpassword', user.forgotPassword);  // send forgot password at user email
     app.post('/resetpassword', user.resetPassword);  // resets password via verification code
     app.post('/updatepassword', user.changePassword);  // change password,provide old password,new password,email
     //app.get('/users', user.getUserList);  // Get User List
@@ -34,3 +34,22 @@ module.exports = function (app) {
 
 
 };
+
+//TODO Test changes password
+//TODO Test forget password
+//TODO Test update profile
+//TODO Test on Nexus 5
+//TODO Fix location issue
+//TODO Image Upload
+//TODO sqlite update user when profile update
+//TODO Fetch the data on search screen
+//TODO Add filters
+//TODO fetch comments list
+//TODO Add comment
+//TODO delete comment
+//TODO Chat
+//TODO History
+//TODO Add friend (screen)
+//TODO Search Friend (screen)
+//TODO Delete friend (screen)
+//TODO Get friend list of user
