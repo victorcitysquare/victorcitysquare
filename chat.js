@@ -3,7 +3,7 @@ module.exports = function (app) {
 var socketio= require("socket.io");
     //var io = socketio.listen(app.server);
 
-    var io = socketio.listen(app);
+    var io = socketio.listen(app.server);
 // Chatroom
 
     var numUsers = 0;
@@ -20,6 +20,7 @@ var socketio= require("socket.io");
 
         // when the client emits 'new message', this listens and executes
         socket.on('new message', function (data) {
+            console.log("fuck new message has arraived",data);
             // we tell the client to execute 'new message'
             socket.broadcast.emit('new message', {
                 username: socket.username,
