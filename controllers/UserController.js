@@ -205,6 +205,8 @@ function usersController() {
 
 // Forgot Password
     that.forgotPassword = function (req, res, next) {
+
+        console.log("request "+req.params)
         var token = that.randomString();
 
         console.log("userController.forgotPassword random 8 bit token=" + token);
