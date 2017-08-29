@@ -12,7 +12,7 @@ module.exports = function (app) {
     app.post('/register', user.register); //Register User
     app.post('/login', user.login);  // Authenticate User
     app.get('/users/:email', user.getUserByEmail);  // Get User Profile By email
-    app.post('/forgotpassword', user.forgotPassword);  // send forgot password at user email
+    app.get('/forgotpassword', user.forgotPassword);  // send forgot password at user email
     app.post('/resetpassword', user.resetPassword);  // resets password via verification code
     app.post('/updatepassword', user.changePassword);  // change password,provide old password,new password,email
     //app.get('/users', user.getUserList);  // Get User List
