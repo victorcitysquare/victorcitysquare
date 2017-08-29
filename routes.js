@@ -2,6 +2,7 @@ module.exports = function (app) {
     var user = require('./controllers/UserController');
     var location = require('./controllers/LocationController');
     var fileController = require('./controllers/FileController');
+    var friend = require('./controllers/FriendController');
 
 
     app.get('/', function (req, res, next) {
@@ -25,9 +26,10 @@ module.exports = function (app) {
     app.post('/uploadImage', fileController.uploadImage);
     app.get('/download', fileController.download);
 
-    app.post('/addfriend', user.addFriend);
-    app.get('/friends/:email', user.getFriendListByEmail);
-    app.get('/friendlist/:email', user.searchFriend);
+    app.post('/addfriend', friend.addFriend);
+    app.post('/unfriend', friend.unFriend);
+    app.get('/friends/:email', friend.getFriendListByEmail);
+    app.get('/friendlist/:email', friend.searchFriend);
 
 
 
