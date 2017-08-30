@@ -22,7 +22,6 @@ module.exports = function (app) {
 
     app.get('/location', location.getLocation);  // Get Location
 
-
     app.post('/uploadImage', fileController.uploadImage);
     app.get('/download', fileController.download);
 
@@ -36,3 +35,22 @@ module.exports = function (app) {
 
 
 };
+
+//TODO Test changes password
+//TODO Test forget password
+//TODO Test update profile
+//TODO Test on Nexus 5
+//TODO Fix location issue
+//TODO Image Upload
+//TODO sqlite update user when profile update
+//TODO Fetch the data on search screen
+//TODO Add filters
+//TODO fetch comments list
+//TODO Add comment
+//TODO delete comment
+//TODO Chat
+//TODO History
+//TODO Add friend (screen)
+//TODO Search Friend (screen)
+//TODO Delete friend (screen)
+//TODO Get friend list of user

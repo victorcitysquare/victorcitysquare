@@ -205,6 +205,8 @@ function usersController() {
 
 // Forgot Password
     that.forgotPassword = function (req, res, next) {
+
+        console.log("email "+req.params.email)
         var token = that.randomString();
 
         console.log("userController.forgotPassword random 8 bit token=" + token);
@@ -219,8 +221,8 @@ function usersController() {
                     text: "Don't worry, we all forget passwords! your temporary password is:  ".concat(token)
                 }, function (error, info) {
                     if (error) {
-                        return res.send(generalResponse.sendFailureResponse("Error Occured while sending forgot password email", 400, error));
                         console.log("forgotPassword().sendEmail() Email Send error ", error);
+                        return res.send(generalResponse.sendFailureResponse("Error Occured while sending forgot password email", 400, error));
                     } else if (info) {
                         console.log('UtilController that.sendEmail() Email sent: ' + info.response);
                         return res.send(generalResponse.sendSuccessResponse("Temporary Password sent successfully at " + req.params.email, 200, data));
