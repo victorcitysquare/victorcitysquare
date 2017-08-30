@@ -77,10 +77,11 @@ function LocationController() {
                                                     throw error;
                                                 }
                                                 log.info(response);
+                                                searchResults.push(location)
                                             });
                                         }
                                     });
-                                    //   searchResults.push(location)
+
                                 }
                             }
                         }
