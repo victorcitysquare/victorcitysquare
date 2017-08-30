@@ -12,10 +12,10 @@ function LocationController() {
     var generalResponse = require('./GeneralResponse');
     var locations = require('../models/locationSchema');
 
-    var PlaceSearch = require("../lib/PlaceSearch.js");
+    var PlaceSearch = require("googleplaces/lib/PlaceSearch.js");
     var placeSearch = new PlaceSearch(config.apiKey, config.outputFormat);
 
-    var PlaceDetailsRequest = require("../lib/PlaceDetailsRequest.js");
+    var PlaceDetailsRequest = require("googleplaces/lib/PlaceDetailsRequest.js");
     var placeDetailsRequest = new PlaceDetailsRequest(config.apiKey, config.outputFormat);
 
     var config = require("../maps-config.js");
