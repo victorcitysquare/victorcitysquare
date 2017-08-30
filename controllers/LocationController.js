@@ -9,6 +9,7 @@ function LocationController() {
     var mongoose = require('mongoose');
     mongoose.set('debug', true);
 
+    var config = require("../maps-config.js");
     var generalResponse = require('./GeneralResponse');
     var locations = require('../models/locationSchema');
 
@@ -18,7 +19,6 @@ function LocationController() {
     var PlaceDetailsRequest = require("googleplaces/lib/PlaceDetailsRequest.js");
     var placeDetailsRequest = new PlaceDetailsRequest(config.apiKey, config.outputFormat);
 
-    var config = require("../maps-config.js");
 
     var NearBySearch = require("googleplaces/lib/NearBySearch");
     var nearBySearch = new NearBySearch(config.apiKey, config.outputFormat);
