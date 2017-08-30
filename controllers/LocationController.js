@@ -68,13 +68,21 @@ function LocationController() {
                                     placeSearch({
                                         place_id: place_id
                                     }, function (error, response) {
-                                        if (error) throw error;
+                                        if (error) {
+                                            console.log("error inside place search ",error)
+                                            throw error;
+                                        }
+                                        console.log("Response of placeSearch ",response);
+
                                         placeDetailsRequest({reference: response.results[0].reference}, function (error, response) {
-                                            if (error) throw error;
+                                            if (error){
+                                                console.log("error inside details request ",error)
+                                                throw error;
+                                            }
                                             log.info(response, "getLocationDeatils() Place details request response status is OK");
                                         });
                                     });
-                                    searchResults.push(location)
+                                 //   searchResults.push(location)
                                 }
                             }
                         }
