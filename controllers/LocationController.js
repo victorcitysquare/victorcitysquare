@@ -12,8 +12,13 @@ function LocationController() {
     var generalResponse = require('./GeneralResponse');
     var locations = require('../models/locationSchema');
 
-    var config = require("../maps-config.js");
+    var PlaceSearch = require("../lib/PlaceSearch.js");
+    var placeSearch = new PlaceSearch(config.apiKey, config.outputFormat);
 
+    var PlaceDetailsRequest = require("../lib/PlaceDetailsRequest.js");
+    var placeDetailsRequest = new PlaceDetailsRequest(config.apiKey, config.outputFormat);
+
+    var config = require("../maps-config.js");
 
     var NearBySearch = require("googleplaces/lib/NearBySearch");
     var nearBySearch = new NearBySearch(config.apiKey, config.outputFormat);
@@ -38,7 +43,7 @@ function LocationController() {
             } else {
                 if (result.length > 0) {
                     console.log("present in database "+result)
-                    res.send(result)
+                    return res.send(result)
                 } else {
 
                     var searchResults = []
@@ -103,6 +108,39 @@ function LocationController() {
         });
 
     };
+
+
+    that.getLocationDeatils = function (req, res, next) {
+        var parameters = {
+            place_id: req.params.placeid,
+        };
+
+        var query = locations.find(parameters)
+        query.exec(function (err, result) {
+            if (err) {
+                console.log("getLocationDeatils() Error " + err)
+                throw  err;
+            } else {
+                if (result.length > 0) {
+                    console.log("getLocationDeatils() present in database " + result)
+                    res.send(result)
+                }else {
+
+                    placeSearch(parameters, function (error, response) {
+                        if (error) throw error;
+                        placeDetailsRequest({reference: response.results[0].reference}, function (error, response) {
+                            if (error) throw error;
+                            log.info(response.status, "getLocationDeatils() Place details request response status is OK");
+                        });
+                    });
+
+                }
+            }
+
+        });
+
+    };
+
     return that;
 
 };
