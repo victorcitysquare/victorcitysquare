@@ -21,7 +21,7 @@ module.exports = function (app) {
 
 
     app.get('/location', location.getLocation);  // Get Location
-
+    app.get('/locationdetails', location.getLocationDeatils);
 
     app.post('/uploadImage', fileController.uploadImage);
     app.get('/download', fileController.download);
