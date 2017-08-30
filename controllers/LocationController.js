@@ -42,7 +42,7 @@ function LocationController() {
                 throw  err;
             } else {
                 if (result.length > 0) {
-                    console.log("present in database "+result)
+                    console.log("present in database " + result)
                     return res.send(result)
                 } else {
 
@@ -59,9 +59,9 @@ function LocationController() {
                                     var locationData = response[key][data]
 
                                     var place_id = null;
-                                    if(locationData.place_id){
+                                    if (locationData.place_id) {
                                         place_id = locationData.place_id;
-                                    }else {
+                                    } else {
                                         place_id = locationData.reference;
                                     }
 
@@ -69,20 +69,18 @@ function LocationController() {
                                         place_id: place_id
                                     }, function (error, response) {
                                         if (error) {
-                                            console.log("error inside place search ",error)
                                             throw error;
                                         }
-                                        console.log("Response of placeSearch ",response);
-
-                                        placeDetailsRequest({reference: response.results[0].reference}, function (error, response) {
-                                            if (error){
-                                                console.log("error inside details request ",error)
-                                                throw error;
-                                            }
-                                            log.info(response, "getLocationDeatils() Place details request response status is OK");
-                                        });
+                                        for (var i = 0 in response) {
+                                            placeDetailsRequest({reference: response.results[i].reference}, function (error, response) {
+                                                if (error) {
+                                                    throw error;
+                                                }
+                                                log.info(response);
+                                            });
+                                        }
                                     });
-                                 //   searchResults.push(location)
+                                    //   searchResults.push(location)
                                 }
                             }
                         }
