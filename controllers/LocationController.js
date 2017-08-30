@@ -9,15 +9,10 @@ function LocationController() {
     var mongoose = require('mongoose');
     mongoose.set('debug', true);
 
-    var config = require("../maps-config.js");
     var generalResponse = require('./GeneralResponse');
     var locations = require('../models/locationSchema');
 
-    var PlaceSearch = require("googleplaces/lib/PlaceSearch.js");
-    var placeSearch = new PlaceSearch(config.apiKey, config.outputFormat);
-
-    var PlaceDetailsRequest = require("googleplaces/lib/PlaceDetailsRequest.js");
-    var placeDetailsRequest = new PlaceDetailsRequest(config.apiKey, config.outputFormat);
+    var config = require("../maps-config.js");
 
 
     var NearBySearch = require("googleplaces/lib/NearBySearch");
@@ -42,8 +37,8 @@ function LocationController() {
                 throw  err;
             } else {
                 if (result.length > 0) {
-                    console.log("present in database " + result)
-                    return res.send(result)
+                    console.log("present in database "+result)
+                    res.send(result)
                 } else {
 
                     var searchResults = []
@@ -57,41 +52,34 @@ function LocationController() {
                                 for (var data in response[key]) {
 
                                     var locationData = response[key][data]
-
-                                    var place_id = null;
-                                    if (locationData.place_id) {
-                                        place_id = locationData.place_id;
-                                    } else {
-                                        place_id = locationData.reference;
+                                    var location = {
+                                        location: req.params.location,
+                                        radius: req.params.radius,
+                                        keyword: req.params.keyword,
+                                        opennow: req.params.opennow,
+                                        geometry: locationData.geometry,
+                                        language: "en",
+                                        icon: locationData.icon,
+                                        id: locationData.id,
+                                        name: locationData.name,
+                                        opening_hours: locationData.opening_hours,
+                                        photos: locationData.photos,
+                                        place_id: locationData.place_id,
+                                        price_level: locationData.price_level,
+                                        rating: locationData.rating,
+                                        reference: locationData.reference,
+                                        scope: locationData.scope,
+                                        types: locationData.types,
+                                        vicinity: locationData.vicinity
                                     }
-
-                                    placeSearch({
-                                        place_id: place_id
-                                    }, function (error, response) {
-                                        if (error) {
-                                            throw error;
-                                        }
-
-                                        console.log("Response==================", response)
-
-                                        searchResults.push(response)
-
-                                            searchResults.push(response[i])
-                                            /*placeDetailsRequest({reference: response.results[i].reference}, function (error, response) {
-                                                if (error) {
-                                                    throw error;
-                                                }
-                                                log.info(response);
-                                                searchResults.push(location)
-                                            });*/
-                                    });
-
+                                    searchResults.push(location)
                                 }
                             }
                         }
 
 
                         console.log("Search results .length " + searchResults.length)
+
 
                         locations.create(
                             searchResults
@@ -115,7 +103,6 @@ function LocationController() {
         });
 
     };
-
     return that;
 
 };
