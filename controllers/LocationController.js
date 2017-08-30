@@ -57,26 +57,23 @@ function LocationController() {
                                 for (var data in response[key]) {
 
                                     var locationData = response[key][data]
-                                    var location = {
-                                        location: req.params.location,
-                                        radius: req.params.radius,
-                                        keyword: req.params.keyword,
-                                        opennow: req.params.opennow,
-                                        geometry: locationData.geometry,
-                                        language: "en",
-                                        icon: locationData.icon,
-                                        id: locationData.id,
-                                        name: locationData.name,
-                                        opening_hours: locationData.opening_hours,
-                                        photos: locationData.photos,
-                                        place_id: locationData.place_id,
-                                        price_level: locationData.price_level,
-                                        rating: locationData.rating,
-                                        reference: locationData.reference,
-                                        scope: locationData.scope,
-                                        types: locationData.types,
-                                        vicinity: locationData.vicinity
+
+                                    var place_id = null;
+                                    if(locationData.place_id){
+                                        place_id = locationData.place_id;
+                                    }else {
+                                        place_id = locationData.reference;
                                     }
+
+                                    placeSearch({
+                                        place_id: place_id
+                                    }, function (error, response) {
+                                        if (error) throw error;
+                                        placeDetailsRequest({reference: response.results[0].reference}, function (error, response) {
+                                            if (error) throw error;
+                                            log.info(response, "getLocationDeatils() Place details request response status is OK");
+                                        });
+                                    });
                                     searchResults.push(location)
                                 }
                             }
@@ -84,7 +81,6 @@ function LocationController() {
 
 
                         console.log("Search results .length " + searchResults.length)
-
 
                         locations.create(
                             searchResults
@@ -105,38 +101,6 @@ function LocationController() {
 
                 }
             }
-        });
-
-    };
-
-
-    that.getLocationDeatils = function (req, res, next) {
-        var parameters = {
-            place_id: req.params.placeid,
-        };
-
-        var query = locations.find(parameters)
-        query.exec(function (err, result) {
-            if (err) {
-                console.log("getLocationDeatils() Error " + err)
-                throw  err;
-            } else {
-                if (result.length > 0) {
-                    console.log("getLocationDeatils() present in database " + result)
-                    res.send(result)
-                }else {
-
-                    placeSearch(parameters, function (error, response) {
-                        if (error) throw error;
-                        placeDetailsRequest({reference: response.results[0].reference}, function (error, response) {
-                            if (error) throw error;
-                            log.info(response.status, "getLocationDeatils() Place details request response status is OK");
-                        });
-                    });
-
-                }
-            }
-
         });
 
     };
