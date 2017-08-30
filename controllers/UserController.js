@@ -243,8 +243,8 @@ function usersController() {
 
 // Reset Password
     that.resetPassword = function (req, res, next) {
-
-
+console.log("userController().resetPassword req.params",req.params);
+    console.log("userController().resetPassword req.body",req.body);
         var query = {email: req.body.email, verificationCode: req.body.verificationCode};
         var userData = {}; // updated user
         for (var n in req.params) {

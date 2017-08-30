@@ -1,3 +1,5 @@
+
+/*
 module.exports = function (app) {
 
 var socketio= require("socket.io");
@@ -20,7 +22,7 @@ var socketio= require("socket.io");
 
         // when the client emits 'new message', this listens and executes
         socket.on('new message', function (data) {
-            console.log("fuck new message has arraived",data);
+            console.log("new message has arraived",data);
             // we tell the client to execute 'new message'
             socket.broadcast.emit('new message', {
                 username: socket.username,
@@ -76,3 +78,4 @@ var socketio= require("socket.io");
 
 
 };
+*/

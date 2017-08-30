@@ -13,4 +13,4 @@ app.listen({
 
 var routes = require('./routes')(app);
 var passport = require('./passport')(app);
-var chat= require('./chat')(app);
+//var chat= require('./chat')(app);
