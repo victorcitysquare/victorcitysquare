@@ -71,8 +71,10 @@ function LocationController() {
                                         if (error) {
                                             throw error;
                                         }
-                                        for (var i = 0 in response) {
-                                            console.log("Response==================", response[i])
+
+                                        console.log("Response==================", response)
+
+                                        searchResults.push(response)
 
                                             searchResults.push(response[i])
                                             /*placeDetailsRequest({reference: response.results[i].reference}, function (error, response) {
@@ -82,7 +84,6 @@ function LocationController() {
                                                 log.info(response);
                                                 searchResults.push(location)
                                             });*/
-                                        }
                                     });
 
                                 }
