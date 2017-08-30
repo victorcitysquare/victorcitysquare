@@ -247,18 +247,21 @@ function usersController() {
     that.resetPassword = function (req, res, next) {
 console.log("userController().resetPassword req.params",req.params);
     console.log("userController().resetPassword req.body",req.body);
-        var query = {email: req.body.email, verificationCode: req.body.verificationCode};
+        var query = {email: req.params.email, verificationCode: req.params.verificationCode};
         var userData = {}; // updated user
-        for (var n in req.params) {
-            if (req.body[n]) {
-                userData[n] = req.body[n];
-                if (n == "password") {
-                    var salt = bcrypt.genSaltSync(10);
-                    userData[n] = bcrypt.hashSync(req.body.password, salt);
-                    userData["hashKey"] = salt;
-                }
-            }
-        }
+        // for (var n in req.params) {
+        //     if (req.body[n]) {
+        //         userData[n] = req.body[n];
+        //         if (n == "password") {
+        //             var salt = bcrypt.genSaltSync(10);
+        //             userData[n] = bcrypt.hashSync(req.body.password, salt);
+        //             userData["hashKey"] = salt;
+        //         }
+        //     }
+        // }
+        var salt = bcrypt.genSaltSync(10);
+        userData["password"] = bcrypt.hashSync(req.params.password, salt);
+        userData["hashKey"] = salt;
         userData["verificationCode"] = "";
         users.findOneAndUpdate(query, userData, {new: true}, function (err, data) {
             if (err)
