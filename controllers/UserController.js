@@ -155,6 +155,9 @@ function usersController() {
 
     that.updateUserProfile = function (req, res, next) {
 
+        console.log("userController.updateUserProfile req.prams",params);
+      console.log("userController.updateUserProfile req.prams",req.body);
+
         var query = {"email": req.body.email};
         var userData = {}; // updated user
         for (var n in req.params) {
@@ -170,14 +173,15 @@ function usersController() {
         console.log("userProfileUpdate,userData", userData);
         users.findOneAndUpdate(query, userData, {new: true}, function (err, data) {
             if (err) {
-                console.log("userController.updateUserProfile :", err);
+                console.log("userController.updateUserProfile Error:", err);
                 return res.send(generalResponse.sendFailureResponse("Update UserProfile ,error Occured", 400, error));
             }
             else if (data) {
+                   console.log("User Was Updated Successfully",  data);
                 return res.send(generalResponse.sendSuccessResponse("User Was Updated Successfully", 200, data));
             }
             else {
-                console.log("userController.updateUserProfile,data= :", data);
+                console.log("userController.updateUserProfile,data sometthingwent wrong", data);
                 return res.send(generalResponse.sendFailureResponse("Sorry,User could not be updated,please check form data", 404, data));
             }
         });
