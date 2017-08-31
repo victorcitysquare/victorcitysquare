@@ -297,9 +297,12 @@ console.log("userController().resetPassword req.params",req.params);
     // Reset Password
     that.changePassword = function (req, res, next) {
 
-        var password = req.body.password;
-        var oldpassword = req.body.oldpassword;
-        var email = req.body.email;
+        console.log("UserController.changePassword req.params",req.params);
+          console.log("UserController.changePassword req.body.params",req.body.params);
+
+        var password = req.params.password;
+        var oldpassword = req.params.oldpassword;
+        var email = req.params.email;
         var query = {email: email};
         var userData = {};
 
