@@ -155,11 +155,20 @@ function usersController() {
 
     that.updateUserProfile = function (req, res, next) {
 
-        console.log("userController.updateUserProfile req.prams",params);
+        console.log("userController.updateUserProfile req.prams",req.params);
       console.log("userController.updateUserProfile req.prams",req.body);
+      var parameters =req.params;
 
-        var query = {"email": req.body.email};
-        var userData = {}; // updated user
+        var query = {"email": parameters.email};
+
+        var userData =  {
+                        username: parameters.username,
+                        age: parameters.age,
+                        number: parameters.number,
+                        state: parameters.state,
+                        city: parameters.city
+                    };
+/*
         for (var n in req.params) {
             if (req.body[n]) {
                 userData[n] = req.body[n];
@@ -169,9 +178,9 @@ function usersController() {
                     userData["hashKey"] = salt;
                 }
             }
-        }
+        }*/
         console.log("userProfileUpdate,userData", userData);
-        users.findOneAndUpdate(query, userData, {new: true}, function (err, data) {
+        users.findOneAndUpdate(query, userData, {new:true}, function (err, data) {
             if (err) {
                 console.log("userController.updateUserProfile Error:", err);
                 return res.send(generalResponse.sendFailureResponse("Update UserProfile ,error Occured", 400, error));
